@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export function generateRandomString(
   baseChars: string = "atoz",
   length: number = 8,
@@ -25,3 +27,13 @@ export function generateRandomString(
     .slice(0, length)
     .join("");
 }
+
+export const formSchema = z.object({
+  longUrl: z.string().url({
+    message: "Please enter a valid URL",
+  }),
+  topic: z.string().optional(),
+  customAlias: z.string().optional(),
+});
+
+export type formType = z.infer<typeof formSchema>;

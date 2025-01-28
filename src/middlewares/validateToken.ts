@@ -20,10 +20,11 @@ const validateToken = (req: Request, res: Response, next: NextFunction) => {
   token = token.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as tokenType;
+    const decoded = jwt.verify(token, process.env.SECRET_SALT!) as tokenType;
     req.body.user = decoded;
     next();
   } catch (err) {
+    console.log(err);
     res.status(401).json({ message: "Unauthorized: Invalid token", err });
     return;
   }

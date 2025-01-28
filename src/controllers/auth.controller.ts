@@ -18,6 +18,7 @@ const initGoogle = async (req: Request, res: Response) => {
     res.json({ url });
     return;
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: "Error Occurred, Please Try Again!" });
   }
 };
@@ -62,7 +63,7 @@ const callbackGoogle = async (req: Request, res: Response) => {
         displayName: user.name,
       },
       process.env.SECRET_SALT!,
-      { expiresIn: "1h" },
+      { expiresIn: "1h" }
     );
     res.redirect(`${process.env.FE_BASE_URL}/callback?token=${token}`);
     return;
