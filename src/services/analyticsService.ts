@@ -2,10 +2,9 @@ import { PrismaClient, UrlAnalytics } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class AnalyticsService {
-  static async createAnalytics(data: Partial<UrlAnalytics>) {
+  static async createAnalytics(data: Omit<UrlAnalytics, "createdAt" | "id">) {
     const analytics = await prisma.urlAnalytics.create({
       data: {
-        urlId: data.urlId!,
         ...data,
       },
     });

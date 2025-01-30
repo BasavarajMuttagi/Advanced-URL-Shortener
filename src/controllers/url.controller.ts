@@ -39,7 +39,7 @@ const redirectShortUrl = async (req: Request, res: Response) => {
     const data = parser.getResult();
     const ip = getClientIp(req) as string;
     const countryJSON = await fetch(`${NORD}/${ip}`).then((res) => res.json());
-    const body: Partial<UrlAnalytics> = {
+    const body: Omit<UrlAnalytics, "createdAt" | "id"> = {
       browserName: data.browser.name || "Unknown",
       deviceType: data.device.type || "Unknown",
       country: countryJSON.country,
