@@ -2,7 +2,7 @@ import { config } from "dotenv";
 import { Request, Response } from "express";
 import { TokenPayload } from "google-auth-library";
 import { sign } from "jsonwebtoken";
-import { client } from "..";
+import { client } from "../..";
 import prisma from "../../prisma/db";
 config();
 const initGoogle = async (req: Request, res: Response) => {

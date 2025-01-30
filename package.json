@@ -1,11 +1,11 @@
 {
   "name": "advanced-url-shortener",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon index.ts",
     "lint": "eslint .",
     "prettier": "prettier --check \"**/*.{js,ts,jsx,tsx,json,css,scss,md}\"",
     "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,css,scss,md}\"",
@@ -37,6 +37,7 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.8",
     "@types/node": "^22.10.10",
+    "@vitest/coverage-v8": "^3.0.4",
     "eslint": "^9.18.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
