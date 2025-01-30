@@ -1,8 +1,13 @@
 import express from "express";
-import { getAnalyticsByAlias } from "../controllers/analytics.controller";
+import {
+  getAnalyticsByAlias,
+  getOverallAnalytics,
+} from "../controllers/analytics.controller";
+import { validateToken } from "../middlewares/validateToken";
 const AnalyticsRouter = express.Router();
 
-AnalyticsRouter.get("/:alias", getAnalyticsByAlias);
 AnalyticsRouter.get("/topic/:topic");
-AnalyticsRouter.get("/overall");
+AnalyticsRouter.get("/overall", validateToken, getOverallAnalytics);
+AnalyticsRouter.get("/:alias", validateToken, getAnalyticsByAlias);
+
 export default AnalyticsRouter;
