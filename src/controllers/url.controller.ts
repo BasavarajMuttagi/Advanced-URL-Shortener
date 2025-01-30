@@ -1,10 +1,13 @@
 import { Url, UrlAnalytics } from "@prisma/client";
+import { config } from "dotenv";
 import { Request, Response } from "express";
 import { UAParser } from "ua-parser-js";
 import { tokenType } from "../middlewares/validateToken";
 import AnalyticsService from "../services/analyticsService";
 import UrlService from "../services/urlService";
 import { generateRandomString } from "../utils";
+config();
+const NORD = process.env.NORD;
 const parser = new UAParser();
 type formType = Pick<
   Url,
@@ -35,17 +38,15 @@ const redirectShortUrl = async (req: Request, res: Response) => {
     parser.setUA(userAgent!);
     const data = parser.getResult();
     const ip = getClientIp(req) as string;
-    const countryJSON = await fetch(
-      `https://web-api.nordvpn.com/v1/ips/lookup/${ip}`,
-    ).then((res) => res.json());
+    const countryJSON = await fetch(`${NORD}/${ip}`).then((res) => res.json());
     const body: Partial<UrlAnalytics> = {
-      browserName: data.browser.name || "",
-      deviceType: data.device.type || "",
-      ip: ip || "",
+      browserName: data.browser.name || "Unknown",
+      deviceType: data.device.type || "Unknown",
       country: countryJSON.country,
-      os: data.os.name || "",
-      userAgent: userAgent || "",
+      os: data.os.name || "Unknown",
+      userAgent: userAgent || "Unknown",
       urlId: result.id,
+      ip: ip,
     };
 
     await AnalyticsService.createAnalytics(body);

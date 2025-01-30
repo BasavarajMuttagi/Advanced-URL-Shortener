@@ -36,12 +36,12 @@ model Url {
 
 model UrlAnalytics {
   id          String   @id @default(uuid())
-  ip          String   @default("unknown")
-  userAgent   String   @default("unknown")
-  country     String   @default("unknown")
-  os          String   @default("unknown")
-  deviceType  String   @default("unknown")
-  browserName String   @default("unknown")
+  ip          String
+  userAgent   String
+  country     String
+  os          String
+  deviceType  String
+  browserName String
   urlId       String
   url         Url      @relation(fields: [urlId], references: [id])
   createdAt   DateTime @default(now())
