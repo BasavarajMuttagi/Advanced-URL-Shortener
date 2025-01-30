@@ -32,4 +32,18 @@ const getOverallAnalytics = async (req: Request, res: Response) => {
   }
 };
 
-export { getAnalyticsByAlias, getOverallAnalytics };
+const getAnalyticsByTopic = async (req: Request, res: Response) => {
+  try {
+    const user = req.body.user as tokenType;
+    const topic = req.params.topic;
+    const result = await AnalyticsService.getAnalyticsByTopic(
+      topic,
+      user.userId,
+    );
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getAnalyticsByAlias, getOverallAnalytics, getAnalyticsByTopic };

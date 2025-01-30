@@ -119,13 +119,13 @@ class AnalyticsService {
     };
   }
 
-  static async getAnalyticsByTopic(topic: string) {
+  static async getAnalyticsByTopic(topic: string, userId: string) {
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
     // First, get all URLs under the specified topic
     const topicUrls = await prisma.url.findMany({
-      where: { topic },
+      where: { topic, userId },
       select: { id: true, shortKey: true },
     });
 
@@ -137,6 +137,9 @@ class AnalyticsService {
         prisma.urlAnalytics.findMany({
           where: {
             urlId: { in: urlIds },
+            url: {
+              userId,
+            },
           },
           select: {
             ip: true,
@@ -149,6 +152,9 @@ class AnalyticsService {
         prisma.urlAnalytics.findMany({
           where: {
             urlId: { in: urlIds },
+            url: {
+              userId,
+            },
           },
           distinct: ["ip"],
           select: {
@@ -160,13 +166,21 @@ class AnalyticsService {
         prisma.urlAnalytics.count({
           where: {
             urlId: { in: urlIds },
+            url: {
+              userId,
+            },
           },
         }),
 
         // Clicks by Date for all URLs in the topic (last 7 days)
         prisma.urlAnalytics.groupBy({
           where: {
-            urlId: { in: urlIds },
+            urlId: {
+              in: urlIds,
+            },
+            url: {
+              userId,
+            },
             createdAt: {
               gte: sevenDaysAgo,
             },
