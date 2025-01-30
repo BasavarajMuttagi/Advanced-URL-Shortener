@@ -63,7 +63,7 @@ const callbackGoogle = async (req: Request, res: Response) => {
         displayName: user.name,
       },
       process.env.SECRET_SALT!,
-      { expiresIn: "1h" }
+      { expiresIn: "1h" },
     );
     res.redirect(`${process.env.FE_BASE_URL}/callback?token=${token}`);
     return;
