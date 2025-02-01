@@ -23,6 +23,7 @@ const createShortUrl = async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -53,6 +54,7 @@ const redirectShortUrl = async (req: Request, res: Response) => {
     res.json({ url: result.longUrl });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -63,6 +65,7 @@ const listShortUrl = async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 

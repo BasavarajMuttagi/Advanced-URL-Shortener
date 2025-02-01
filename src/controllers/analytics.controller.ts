@@ -19,6 +19,7 @@ const getAnalyticsByAlias = async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -29,6 +30,7 @@ const getOverallAnalytics = async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -43,7 +45,8 @@ const getAnalyticsByTopic = async (req: Request, res: Response) => {
     res.json(result);
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-export { getAnalyticsByAlias, getOverallAnalytics, getAnalyticsByTopic };
+export { getAnalyticsByAlias, getAnalyticsByTopic, getOverallAnalytics };

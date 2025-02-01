@@ -19,7 +19,7 @@ const initGoogle = async (req: Request, res: Response) => {
     return;
   } catch (error) {
     console.log(error);
-    res.status(500).send({ message: "Error Occurred, Please Try Again!" });
+    res.status(500).json({ message: "Error Occurred, Please Try Again!" });
   }
 };
 
@@ -27,7 +27,7 @@ const callbackGoogle = async (req: Request, res: Response) => {
   try {
     const { code } = req.query;
     if (!code) {
-      res.status(400).send({ message: "Code is required" });
+      res.status(400).json({ message: "Code is required" });
       return;
     }
 
