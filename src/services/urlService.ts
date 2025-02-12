@@ -1,4 +1,4 @@
-import { Url } from "@prisma/client";
+import { Prisma, Url } from "@prisma/client";
 import prisma from "../../prisma/db";
 
 class UrlService {
@@ -31,14 +31,36 @@ class UrlService {
     });
     return result;
   }
-  static async getUrlByAlias(alias: string) {
+
+  static async getUrlByAlias(alias: string, userId?: string) {
+    const whereClause: Prisma.UrlWhereInput = {
+      OR: [{ shortKey: alias }, { customAlias: alias }],
+    };
+    if (userId) {
+      whereClause.userId = userId;
+    }
     const result = await prisma.url.findFirst({
-      where: {
-        OR: [{ shortKey: alias }, { customAlias: alias }],
-      },
+      where: whereClause,
     });
 
     return result;
+  }
+  static async isAliasExist(alias: string): Promise<boolean> {
+    const url = await prisma.url.findUnique({
+      where: {
+        customAlias: alias,
+      },
+    });
+    return !!url;
+  }
+  static async isUrlExist(url: string, userId: string) {
+    const result = await prisma.url.findFirst({
+      where: {
+        longUrl: url,
+        userId: userId,
+      },
+    });
+    return !!result;
   }
 }
 export default UrlService;

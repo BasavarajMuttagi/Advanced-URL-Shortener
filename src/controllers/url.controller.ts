@@ -17,6 +17,19 @@ const createShortUrl = async (req: Request, res: Response) => {
   try {
     const user = req.body.user as tokenType;
     const data = req.body as formType;
+    const isUrlExist = await UrlService.isUrlExist(data.longUrl, user.userId);
+    if (isUrlExist) {
+      res.status(400).json({ message: "URL already exists" });
+      return;
+    }
+    if (data.customAlias) {
+      const isAliasExist = await UrlService.isAliasExist(data.customAlias);
+      if (isAliasExist) {
+        res.status(400).json({ message: "Alias already exists" });
+        return;
+      }
+    }
+
     data.userId = user.userId;
     data.shortKey = generateRandomString(user.userId);
     const result = await UrlService.createShortUrl(data);

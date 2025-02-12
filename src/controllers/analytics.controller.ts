@@ -7,9 +7,9 @@ const getAnalyticsByAlias = async (req: Request, res: Response) => {
   try {
     const user = req.body.user as tokenType;
     const alias = req.params.alias;
-    const result1 = await UrlService.getUrlByAlias(alias);
+    const result1 = await UrlService.getUrlByAlias(alias, user.userId);
     if (!result1) {
-      res.status(404).json({ message: "URL not found" });
+      res.status(404).json({ message: "Alias not found" });
       return;
     }
     const result = await AnalyticsService.getAnalyticsByUrlId(

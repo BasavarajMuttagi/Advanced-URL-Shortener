@@ -16,6 +16,10 @@ model User {
   urls         Url[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@index([email])
+  @@index([googleId])
+  @@index([createdAt, email])
 }
 
 model Url {
@@ -32,6 +36,9 @@ model Url {
 
   @@index([shortKey])
   @@index([customAlias])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([userId, createdAt])
 }
 
 model UrlAnalytics {
@@ -45,4 +52,11 @@ model UrlAnalytics {
   urlId       String
   url         Url      @relation(fields: [urlId], references: [id])
   createdAt   DateTime @default(now())
+
+  @@index([ip])
+  @@index([country])
+  @@index([createdAt])
+  @@index([deviceType])
+  @@index([country, deviceType])
+  @@index([ip, createdAt])
 }
