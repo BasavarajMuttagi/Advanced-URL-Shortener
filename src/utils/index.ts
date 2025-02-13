@@ -16,15 +16,13 @@ export function generateRandomString(
 
   let result: string = "";
   while (result.length < length) {
-    result += Math.random().toString(36).substring(2);
+    // Generate a random index within the valid character set
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    // Append the character at the random index to the result string
+    result += chars[randomIndex];
   }
 
-  // Trim or filter to match desired length and character set
-  return result
-    .split("")
-    .filter((char: string) => chars.includes(char.toLowerCase()))
-    .slice(0, length)
-    .join("");
+  return result;
 }
 
 export const formSchema = z.object({

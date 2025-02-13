@@ -8,6 +8,7 @@ import UrlRouter from "./src/routes/url.route";
 import { redisClient } from "./src/utils/RedisClient";
 import { analyticsRateLimiter, authRateLimiter } from "./src/utils/rateLimit";
 dotenv.config();
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 

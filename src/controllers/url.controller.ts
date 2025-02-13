@@ -6,6 +6,7 @@ import { tokenType } from "../middlewares/validateToken";
 import AnalyticsService from "../services/analyticsService";
 import UrlService from "../services/urlService";
 import { generateRandomString } from "../utils";
+import { redisClient } from "../utils/RedisClient";
 config();
 const NORD = process.env.NORD;
 const parser = new UAParser();
@@ -31,7 +32,7 @@ const createShortUrl = async (req: Request, res: Response) => {
     }
 
     data.userId = user.userId;
-    data.shortKey = generateRandomString(user.userId);
+    data.shortKey = generateRandomString(user.userId, 8);
     const result = await UrlService.createShortUrl(data);
     res.json(result);
   } catch (error) {
@@ -43,6 +44,12 @@ const createShortUrl = async (req: Request, res: Response) => {
 const redirectShortUrl = async (req: Request, res: Response) => {
   try {
     const alias = req.params.alias;
+    const cachedUrl = await redisClient.get(`url:${alias}`);
+    if (cachedUrl) {
+      res.status(200).json({ url: cachedUrl });
+      console.log("cache hit");
+      return; // Exit early if the URL is in Redis
+    }
     const result = await UrlService.getUrlByAlias(alias);
     if (!result) {
       res.status(404).json({ message: "URL not found" });
@@ -64,6 +71,10 @@ const redirectShortUrl = async (req: Request, res: Response) => {
     };
 
     await AnalyticsService.createAnalytics(body);
+    const expirationTime = 60 * 60 * 24; // 24 hours
+    await redisClient.set(`url:${alias}`, result.longUrl, {
+      EX: expirationTime,
+    });
     res.json({ url: result.longUrl });
   } catch (error) {
     console.log(error);

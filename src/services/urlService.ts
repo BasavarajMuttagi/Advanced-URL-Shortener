@@ -7,7 +7,7 @@ class UrlService {
       Url,
       "longUrl" | "shortKey" | "topic" | "customAlias" | "userId"
     >,
-  ): Promise<Url> {
+  ) {
     const result = await prisma.url.create({
       data: {
         longUrl: data.longUrl,
@@ -15,6 +15,14 @@ class UrlService {
         customAlias: data.customAlias,
         topic: data.topic,
         userId: data.userId,
+      },
+      select: {
+        id: true,
+        longUrl: true,
+        shortKey: true,
+        customAlias: true,
+        topic: true,
+        createdAt: true,
       },
     });
 
